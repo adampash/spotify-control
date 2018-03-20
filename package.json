@@ -23,6 +23,6 @@
     "build:watch": "babel src -s --watch -d lib"
   },
   "dependencies": {
-    "spotify-web-api-js": "^0.23.0"
+    "spotify-web-api-node": "^3.0.0"
   }
 }

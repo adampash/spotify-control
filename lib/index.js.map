@@ -1,0 +1,1 @@
+{"version":3,"sources":["../src/index.js"],"names":["spotifyApi"],"mappings":"AAAA,OAAOA,UAAP,MAAuB,oBAAvB","file":"index.js","sourcesContent":["import spotifyApi from 'spotify-web-api-js';\n"]}

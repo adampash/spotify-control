@@ -20,9 +20,14 @@
   },
   "scripts": {
     "build": "babel src -s -d lib",
-    "build:watch": "babel src -s --watch -d lib"
+    "build:watch": "babel src -s --watch -d lib",
+    "start": "yarn build:watch && node lib/auth.js"
   },
   "dependencies": {
+    "express": "^4.16.3",
+    "moment": "^2.22.0",
+    "node-fetch": "^2.1.2",
+    "openurl": "^1.1.1",
     "spotify-web-api-node": "^3.0.0"
   }
 }

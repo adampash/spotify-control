@@ -4,7 +4,12 @@ const fs = require('fs');
 const fetch = require('node-fetch');
 
 const PORT = 54041;
-const ACCESS_TOKEN_PATH = './ACCESS_TOKEN';
+
+const SPOTIFY_CONTROL_CONF_DIR = `${require('os').homedir()}/.spotify-control`;
+const ACCESS_TOKEN_PATH = `${SPOTIFY_CONTROL_CONF_DIR}/ACCESS_TOKEN`;
+if (!fs.existsSync(SPOTIFY_CONTROL_CONF_DIR)) {
+  fs.mkdirSync(SPOTIFY_CONTROL_CONF_DIR);
+}
 const SPOTIFY_URL = 'https://accounts.spotify.com/authorize';
 const SCOPES = [
   'user-read-private',

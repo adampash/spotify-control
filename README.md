@@ -1,4 +1,9 @@
-# Setup
+# spotify-control
+
+A CLI for a couple of simple spotify things. Currently toggles devices and
+adds the currently playing track to a monthly playlist.
+
+## Setup
 
 Get a Spotify client id and client secret
 You'll need the following environment variables set:
@@ -10,3 +15,13 @@ export CLIENT_ID=<your spotify client id>
 export CLIENT_SECRET=<your spotify client secret>
 ```
 
+## Usage
+
+```bash
+# Toggle output device via spotify connect
+spotify-control toggle-device
+
+# Add currently playing track to a monthly playlist
+# (creates playlist if it doesn't exist — e.g., April 2018)
+spotify-control add-to-monthly-playlist
+```

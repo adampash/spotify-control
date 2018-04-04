@@ -1,19 +1,12 @@
 # Setup
 
-Get a Spotify access token:
+Get a Spotify client id and client secret
+You'll need the following environment variables set:
 
 ```bash
-yarn global add spotify-auth-cli
-
-spotify-token
-```
-
-Copy the output of the `spotify-token` command.
-
-You'll need a .envrc (or something of that ilk) file exporting the following variables:
-
-```bash
-export SPOTIFY_ACCESS_TOKEN=<spotify access token>
 export STEREO=<name your stereo starts with, lowercased>
 export LOCAL=<name your local machine starts with, lowercased>
+export CLIENT_ID=<your spotify client id>
+export CLIENT_SECRET=<your spotify client secret>
 ```
+

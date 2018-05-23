@@ -58,6 +58,19 @@ const toggleDevice = retryWithRefresh(async () => {
 });
 
 const monthlyPlaylistName = moment().format('MMMM YYYY');
+const getMonthlyPlaylist = (log = false) =>
+  retryWithRefresh(async userId => {
+    const client = await spotifyClient();
+    const { body: { items: playlists } } = await client.getUserPlaylists(
+      userId
+    );
+    const playlist =
+      playlists.find(({ name }) => monthlyPlaylistName === name) ||
+      (await client.createPlaylist(userId, monthlyPlaylistName));
+    if (log) console.log(playlist.id);
+    return playlist.id;
+  });
+
 const addToMonthlyPlaylist = retryWithRefresh(async () => {
   const client = await spotifyClient();
   const {
@@ -65,18 +78,17 @@ const addToMonthlyPlaylist = retryWithRefresh(async () => {
   } = await client.getMyCurrentPlayingTrack();
   const { body: { id: userId } } = await client.getMe();
   const { body: { items: playlists } } = await client.getUserPlaylists(userId);
-  const playlist =
-    playlists.find(({ name }) => monthlyPlaylistName === name) ||
-    (await client.createPlaylist(userId, monthlyPlaylistName));
+  const playlistId = await getMonthlyPlaylist()(userId);
   const { body: { items: tracks } } = await client.getPlaylistTracks(
     userId,
-    playlist.id
+    playlistId
   );
   if (tracks.find(({ track: { uri } }) => uri === trackUri)) return;
-  await client.addTracksToPlaylist(userId, playlist.id, [trackUri]);
+  await client.addTracksToPlaylist(userId, playlistId, [trackUri]);
 });
 
 module.exports = {
   'toggle-device': toggleDevice,
   'add-to-monthly-playlist': addToMonthlyPlaylist,
+  'get-monthly-playlist': getMonthlyPlaylist(true),
 };

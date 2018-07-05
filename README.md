@@ -3,6 +3,12 @@
 A CLI for a couple of simple spotify things. Currently toggles devices and
 adds the currently playing track to a monthly playlist.
 
+## Installation
+
+```
+yarn global add https://github.com/adampash/spotify-control
+```
+
 ## Setup
 
 Get a Spotify client id and client secret

@@ -8,15 +8,15 @@
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
-    "babel-eslint": "^8.2.1",
-    "babel-jest": "^22.0.1",
-    "babel-loader": "^7.1.2",
-    "babel-plugin-graphql-tag": "^1.5.0",
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^9.0.0",
+    "babel-jest": "^23.4.2",
+    "babel-loader": "^8.0.0",
+    "babel-plugin-graphql-tag": "^1.6.0",
     "babel-plugin-transform-async-to-generator": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-preset-env": "^1.6.1"
+    "babel-preset-env": "^1.7.0"
   },
   "scripts": {
     "build": "babel src -s -d lib",
@@ -25,9 +25,9 @@
   },
   "dependencies": {
     "express": "^4.16.3",
-    "moment": "^2.22.0",
-    "node-fetch": "^2.1.2",
+    "moment": "^2.22.2",
+    "node-fetch": "^2.2.0",
     "openurl": "^1.1.1",
-    "spotify-web-api-node": "^3.0.0"
+    "spotify-web-api-node": "^3.1.1"
   }
 }

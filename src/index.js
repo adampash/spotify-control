@@ -6,7 +6,7 @@ const spotifyApi = new SpotifyWebApi();
 let REFRESHED_TOKEN = false;
 const retryWithRefresh = fn => async () => {
   try {
-    await fn();
+    return await fn();
   } catch (e) {
     console.log(`ERROR on first try`, e);
     if (REFRESHED_TOKEN) return;
@@ -67,7 +67,7 @@ const getMonthlyPlaylist = (log = false) =>
     const playlist =
       playlists.find(({ name }) => monthlyPlaylistName === name) ||
       (await client.createPlaylist(userId, monthlyPlaylistName));
-    if (log) console.log(playlist.id);
+    if (log) console.log("playlist id:", playlist.id);
     return playlist.id;
   });
 

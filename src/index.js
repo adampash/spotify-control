@@ -4,16 +4,17 @@ const { getAccessToken, refreshAccessToken } = require('./auth');
 
 const spotifyApi = new SpotifyWebApi();
 let REFRESHED_TOKEN = false;
-const retryWithRefresh = fn => async () => {
+const retryWithRefresh = fn => async (...args) => {
+  const loadedFn = () => fn(...args);
   try {
-    return await fn();
+    return await loadedFn();
   } catch (e) {
     console.log(`ERROR on first try`, e);
     if (REFRESHED_TOKEN) return;
     console.log('Trying to refresh token');
     REFRESHED_TOKEN = true;
     await refreshAccessToken();
-    await fn();
+    return await loadedFn();
   }
 };
 
@@ -67,7 +68,7 @@ const getMonthlyPlaylist = (log = false) =>
     const playlist =
       playlists.find(({ name }) => monthlyPlaylistName === name) ||
       (await client.createPlaylist(userId, monthlyPlaylistName));
-    if (log) console.log("playlist id:", playlist.id);
+    if (log) console.log('playlist id:', playlist.id);
     return playlist.id;
   });
 

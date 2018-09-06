@@ -68,7 +68,7 @@ const getMonthlyPlaylist = (log = false) =>
     const playlist =
       playlists.find(({ name }) => monthlyPlaylistName === name) ||
       (await client.createPlaylist(userId, monthlyPlaylistName));
-    if (log) console.log('playlist id:', playlist.id);
+    if (log) console.log(playlist.id);
     return playlist.id;
   });
 

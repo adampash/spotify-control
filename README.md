@@ -31,3 +31,14 @@ spotify-control toggle-device
 # (creates playlist if it doesn't exist — e.g., April 2018)
 spotify-control add-to-monthly-playlist
 ```
+
+## Release
+
+```bash
+# Build
+yarn build
+
+# Increment version in package.json
+yarn version
+```
+

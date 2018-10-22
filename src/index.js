@@ -40,6 +40,21 @@ const selectDevice = async device => {
   }
 };
 
+const startDevice = retryWithRefresh(async (deviceName) => {
+  try {
+    const client = await spotifyClient();
+    const response = await client.getMyDevices();
+    const { body: { devices } } = response;
+    const stereo = devices.find(({ name }) =>
+      name.toLowerCase().startsWith(deviceName)
+    );
+    selectDevice(stereo);
+  } catch (toggleError) {
+    console.log(`toggleError`, toggleError);
+    throw toggleError;
+  }
+});
+
 const toggleDevice = retryWithRefresh(async () => {
   try {
     const client = await spotifyClient();
@@ -88,8 +103,24 @@ const addToMonthlyPlaylist = retryWithRefresh(async () => {
   await client.addTracksToPlaylist(userId, playlistId, [trackUri]);
 });
 
+const setVolume = retryWithRefresh(async (percent = 25) => {
+    const client = await spotifyClient();
+    await client.setVolume(percent);
+});
+
+const pause = retryWithRefresh(async (options = {}) => {
+  const client = await spotifyClient();
+  await client.pause(options);
+});
+const play = retryWithRefresh(async (options = {}) => {
+  const client = await spotifyClient();
+  await client.play(options);
+});
+
 module.exports = {
   'toggle-device': toggleDevice,
+  'start-device': startDevice,
+  'set-volume': setVolume,
   'add-to-monthly-playlist': addToMonthlyPlaylist,
   'get-monthly-playlist': getMonthlyPlaylist(true),
 };

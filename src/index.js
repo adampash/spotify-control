@@ -40,11 +40,13 @@ const selectDevice = async device => {
   }
 };
 
-const startDevice = retryWithRefresh(async (deviceName) => {
+const startDevice = retryWithRefresh(async deviceName => {
   try {
     const client = await spotifyClient();
     const response = await client.getMyDevices();
-    const { body: { devices } } = response;
+    const {
+      body: { devices },
+    } = response;
     const stereo = devices.find(({ name }) =>
       name.toLowerCase().startsWith(deviceName || process.env.STEREO)
     );
@@ -59,7 +61,9 @@ const toggleDevice = retryWithRefresh(async () => {
   try {
     const client = await spotifyClient();
     const response = await client.getMyDevices();
-    const { body: { devices } } = response;
+    const {
+      body: { devices },
+    } = response;
     const stereo = devices.find(({ name }) =>
       name.toLowerCase().startsWith(process.env.STEREO)
     );
@@ -73,39 +77,57 @@ const toggleDevice = retryWithRefresh(async () => {
   }
 });
 
-const monthlyPlaylistName = moment().format('MMMM YYYY');
-const getMonthlyPlaylist = (log = false) =>
-  retryWithRefresh(async userId => {
+const getPlaylist = retryWithRefresh(
+  async (playlistName = 'Discover Weekly') => {
     const client = await spotifyClient();
-    const { body: { items: playlists } } = await client.getUserPlaylists(
-      userId
-    );
-    const playlist =
-      playlists.find(({ name }) => monthlyPlaylistName === name) ||
-      (await client.createPlaylist(userId, monthlyPlaylistName));
-    if (log) console.log(playlist.id);
+    const {
+      body: { id: userId },
+    } = await client.getMe();
+    const {
+      body: { items: playlists },
+    } = await client.getUserPlaylists(userId);
+    const playlist = playlists.find(({ name }) => playlistName === name);
+    if (!playlist) {
+      console.log('No playlist with that name exits');
+      console.log('Here are your playlists');
+      console.log(playlists);
+      return;
+    }
+    console.log(playlist.id);
     return playlist.id;
-  });
+  }
+);
+
+const getMonthlyPlaylist = retryWithRefresh(async userId => {
+  const monthlyPlaylistName = moment().format('MMMM YYYY');
+  const id = await getPlaylist(monthlyPlaylistName);
+  return id;
+});
 
 const addToMonthlyPlaylist = retryWithRefresh(async () => {
   const client = await spotifyClient();
   const {
-    body: { item: { uri: trackUri } },
+    body: {
+      item: { uri: trackUri },
+    },
   } = await client.getMyCurrentPlayingTrack();
-  const { body: { id: userId } } = await client.getMe();
-  const { body: { items: playlists } } = await client.getUserPlaylists(userId);
-  const playlistId = await getMonthlyPlaylist()(userId);
-  const { body: { items: tracks } } = await client.getPlaylistTracks(
-    userId,
-    playlistId
-  );
+  const {
+    body: { id: userId },
+  } = await client.getMe();
+  const {
+    body: { items: playlists },
+  } = await client.getUserPlaylists(userId);
+  const playlistId = await getMonthlyPlaylist(userId);
+  const {
+    body: { items: tracks },
+  } = await client.getPlaylistTracks(userId, playlistId);
   if (tracks.find(({ track: { uri } }) => uri === trackUri)) return;
   await client.addTracksToPlaylist(userId, playlistId, [trackUri]);
 });
 
 const setVolume = retryWithRefresh(async (percent = 25) => {
-    const client = await spotifyClient();
-    await client.setVolume(percent);
+  const client = await spotifyClient();
+  await client.setVolume(percent);
 });
 
 const pause = retryWithRefresh(async (options = {}) => {
@@ -124,5 +146,6 @@ module.exports = {
   'start-device': startDevice,
   'set-volume': setVolume,
   'add-to-monthly-playlist': addToMonthlyPlaylist,
-  'get-monthly-playlist': getMonthlyPlaylist(true),
+  'get-monthly-playlist': getMonthlyPlaylist,
+  'get-playlist': getPlaylist,
 };

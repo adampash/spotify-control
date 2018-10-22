@@ -40,5 +40,6 @@ yarn build
 
 # Increment version in package.json
 yarn version
+git push && git push --tags
 ```
 

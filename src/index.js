@@ -46,7 +46,7 @@ const startDevice = retryWithRefresh(async (deviceName) => {
     const response = await client.getMyDevices();
     const { body: { devices } } = response;
     const stereo = devices.find(({ name }) =>
-      name.toLowerCase().startsWith(deviceName)
+      name.toLowerCase().startsWith(deviceName || process.env.STEREO)
     );
     selectDevice(stereo);
   } catch (toggleError) {
@@ -119,6 +119,8 @@ const play = retryWithRefresh(async (options = {}) => {
 
 module.exports = {
   'toggle-device': toggleDevice,
+  play: play,
+  pause: pause,
   'start-device': startDevice,
   'set-volume': setVolume,
   'add-to-monthly-playlist': addToMonthlyPlaylist,

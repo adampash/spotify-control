@@ -75,6 +75,9 @@ const getAccessToken = async () =>
           headers: SERVER_AUTH_HEADERS,
         });
         const { error, error_description, ...body } = await authReq.json();
+        console.log(`error`, error);
+        console.log(`error_description`, error_description);
+        console.log(`body`, body);
         if (error) reject(error_description);
         fs.writeFileSync(ACCESS_TOKEN_PATH, JSON.stringify(body));
         resolve(body.access_token);

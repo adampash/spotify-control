@@ -33,7 +33,6 @@ const selectDevice = async device => {
     const client = await spotifyClient();
     const result = await client.transferMyPlayback({
       deviceIds: [device.id],
-      play: true,
     });
   } catch (e) {
     console.log(`Error in selectDevice`, e);

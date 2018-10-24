@@ -47,10 +47,11 @@ const startDevice = retryWithRefresh(async deviceName => {
     const {
       body: { devices },
     } = response;
-    const stereo = devices.find(({ name }) =>
+    const device = devices.find(({ name }) =>
       name.toLowerCase().startsWith(deviceName || process.env.STEREO)
     );
-    selectDevice(stereo);
+    if (device.is_active) return;
+    selectDevice(device);
   } catch (toggleError) {
     console.log(`toggleError`, toggleError);
     throw toggleError;

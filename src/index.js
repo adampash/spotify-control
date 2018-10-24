@@ -98,8 +98,9 @@ const getPlaylist = retryWithRefresh(
   }
 );
 
+const monthlyPlaylistName = () => moment().format('MMMM YYYY');
 const getMonthlyPlaylist = retryWithRefresh(async userId => {
-  const monthlyPlaylistName = moment().format('MMMM YYYY');
+  const monthlyPlaylistName = getMonthlyPlaylistName()
   const id = await getPlaylist(monthlyPlaylistName);
   return id;
 });
@@ -147,5 +148,6 @@ module.exports = {
   'set-volume': setVolume,
   'add-to-monthly-playlist': addToMonthlyPlaylist,
   'get-monthly-playlist': getMonthlyPlaylist,
+  'get-monthly-playlist-name': getMonthlyPlaylistName,
   'get-playlist': getPlaylist,
 };

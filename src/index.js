@@ -98,7 +98,7 @@ const getPlaylist = retryWithRefresh(
   }
 );
 
-const monthlyPlaylistName = () => moment().format('MMMM YYYY');
+const getMonthlyPlaylistName = () => moment().format('MMMM YYYY');
 const getMonthlyPlaylist = retryWithRefresh(async userId => {
   const monthlyPlaylistName = getMonthlyPlaylistName()
   const id = await getPlaylist(monthlyPlaylistName);

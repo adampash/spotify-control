@@ -145,12 +145,11 @@ const play = retryWithRefresh(async (options = {}) => {
 const getPlaybackState = retryWithRefresh(async () => {
   const client = await spotifyClient();
   const state = await client.getMyCurrentPlaybackState();
-  console.log('state', JSON.stringify(state, null, 2));
   return state;
 });
 
 const getCurrentlyPlayingTrackAndArtist = async () => {
-  const { body: { item: { name: trackName, artists } } } = await getPlaybackState();
+  const { body: { item: { name: trackName, artists } = {} } } = await getPlaybackState();
   const artistName = artists.map(({ name }) => name).join(", ");
   const nowPlaying = `${trackName} by ${artistName}`;
   console.log(nowPlaying);
@@ -158,13 +157,14 @@ const getCurrentlyPlayingTrackAndArtist = async () => {
 }
 
 const getShuffleState = async () => {
-  const { body: { shuffle_state } } = await getPlaybackState();
+  const playbackState = await getPlaybackState();
+  const { body: { shuffle_state } } = playbackState
   return shuffle_state;
 }
 
-const setShuffle = retryWithRefresh(async (state) => {
+const setShuffle = retryWithRefresh(async (state = true) => {
   const client = await spotifyClient();
-  const state = await client.setShuffle({ state });
+  await client.setShuffle({ state });
 });
 
 module.exports = {

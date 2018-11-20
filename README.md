@@ -46,7 +46,7 @@ yarn build:watch
 ```bash
 # Build
 yarn build
-git add -m "your release notes"
+git commit -m "your release notes"
 
 # Increment version in package.json
 yarn version

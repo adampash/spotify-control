@@ -32,11 +32,21 @@ spotify-control toggle-device
 spotify-control add-to-monthly-playlist
 ```
 
+## Develop
+
+```bash
+yarn build:watch
+
+# to test cli
+./bin/spotify-control.js <argument>
+```
+
 ## Release
 
 ```bash
 # Build
 yarn build
+git add -m "your release notes"
 
 # Increment version in package.json
 yarn version

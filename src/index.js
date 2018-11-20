@@ -167,6 +167,12 @@ const setShuffle = retryWithRefresh(async (state = true) => {
   await client.setShuffle({ state });
 });
 
+// state can be context, track, or off
+const setRepeat = retryWithRefresh(async (state = 'context') => {
+  const client = await spotifyClient();
+  await client.setRepeat({ state });
+});
+
 module.exports = {
   'toggle-device': toggleDevice,
   play: play,
@@ -181,4 +187,5 @@ module.exports = {
   'get-current-track-and-artist': getCurrentlyPlayingTrackAndArtist,
   'get-shuffle-state': getShuffleState,
   'set-shuffle': setShuffle,
+  'set-repeat': setRepeat,
 };
